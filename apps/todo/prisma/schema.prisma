@@ -1,0 +1,28 @@
+datasource mysql {
+  provider = "mysql"
+  url      = env("DB_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  createdAt DateTime @default(now())
+  firstName String?
+  id        String   @id @default(cuid())
+  lastName  String?
+  password  String
+  roles     Json
+  task      Tasks?
+  updatedAt DateTime @updatedAt
+  username  String   @unique
+}
+
+model Tasks {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  updatedAt DateTime @updatedAt
+  user_id   User?    @relation(fields: [user_id], references: [id])
+  user_id   String?  @unique
+}
